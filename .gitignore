@@ -1,0 +1,11 @@
+# Environments
+#.env
+#.flaskenv
+venv/
+# Byte-compiled / optimized / DLL files
+__pycache__/
+
+# pycharm
+.idea/
+
+migrations/

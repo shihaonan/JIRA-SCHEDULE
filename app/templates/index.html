@@ -1,0 +1,162 @@
+{% extends 'base.html' %}
+{% from 'bootstrap/pagination.html' import render_pagination %}
+
+{% block content %}
+<div class="container">
+        <div class="item center-block">
+            <div class="jirakey">
+                jira编号
+            </div>
+            <div class="summary">
+                需求标题
+            </div>
+            <div class="creator">
+                产品经理
+            </div>
+            <div class="created_time">
+                创建时间
+            </div>
+            <div class="schedules">
+                UI排期
+            </div>
+            <div class="schedules">
+                后端排期
+            </div>
+            <div class="schedules">
+                前端排期
+            </div>
+            <div class="schedules">
+                测试排期
+            </div>
+            <div class="submit">
+                操作
+            </div>
+
+        </div>
+
+{% if issues %}
+    {% for issue in issues %}
+        <div class="item center-block">
+            <div class="jirakey">
+                {{ issue.key }}
+            </div>
+            <div class="summary">
+                {{ issue.summary }}
+            </div>
+            <div class="creator">
+                {{ issue.creator }}
+            </div>
+            <div class="created_time">
+                {{ issue.created_time }}
+            </div>
+            <div class="schedule">
+                {% if issue.ui_schedule %}
+                <p>{{ issue.ui_schedule[0:10] }}</p>
+                <p>{{ issue.ui_schedule[12:24] }}</p>
+                {% endif %}
+            </div>
+            <div class="schedule">
+                {% if issue.back_schedule %}
+                <p>{{ issue.back_schedule[0:10] }}</p>
+                <p>{{ issue.back_schedule[12:24] }}</p>
+                {% endif %}
+            </div>
+            <div class="schedule">
+                {% if issue.front_schedule %}
+                <p>{{ issue.front_schedule[0:10] }}</p>
+                <p>{{ issue.front_schedule[12:24] }}</p>
+                {% endif %}
+            </div>
+            <div class="schedule">
+                {% if issue.test_schedule %}
+                <p>{{ issue.test_schedule[0:10] }}</p>
+                <p>{{ issue.test_schedule[12:24] }}</p>
+                {% endif %}
+            </div>
+            <div class="submit">
+                <button class="edit btn btn-primary" data-id="{{ issue.id }}" data-issue="{{issue}}" data-toggle="modal" data-target="#myModal">编辑</button>
+            </div>
+
+        </div>
+    {% endfor %}
+
+    {{ render_pagination(pagination) }}
+
+{% endif %}
+
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+                <h4 class="modal-title" id="myModalLabel">
+                    排期
+                </h4>
+            </div>
+            <div class="modal-body" id="showform">
+
+            </div>
+<!--            <div class="modal-footer">-->
+<!--                <button type="button" class="btn btn-default" data-dismiss="modal">关闭-->
+<!--                </button>-->
+<!--                <button type="submit" class="btn btn-primary">-->
+<!--                    提交-->
+<!--                </button><span id="tip"> </span>-->
+<!--            </div>-->
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+
+    <button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">开始演示模态框</button>
+
+</div>
+{% endblock content %}
+
+{% block scripts %}
+{{ super() }}
+
+<script type="text/javascript">
+
+
+
+$(function() {
+//表单
+    $('.edit').click(function(){
+        var issue_id=$(this).attr('data-id');
+        $.ajax({
+            type: 'GET',
+            url:'/showform/'+issue_id,
+            success:function(data){
+                console.log(data);
+                $('#showform').html(data.html);
+                //时间选择器
+                $('.scheduleform').children('input').daterangepicker({
+                      autoUpdateInput: false,
+                      showDropdowns:false,
+                      locale: {
+                            format: "YYYY-MM-DD", //设置显示格式
+                            applyLabel: '确定', //确定按钮文本
+                            cancelLabel: '取消', //取消按钮文本
+                            daysOfWeek: ['日', '一', '二', '三', '四', '五', '六'],
+                            monthNames: ['一月', '二月', '三月', '四月', '五月', '六月',
+                            '七月', '八月', '九月', '十月', '十一月', '十二月']
+                      }
+                });
+                $('.scheduleform').children('input').on('apply.daterangepicker', function(ev, picker) {
+                  $(this).val(picker.startDate.format('YYYY-MM-DD') + ' - ' + picker.endDate.format('YYYY-MM-DD'));
+                });
+                $('.scheduleform').children('input').on('cancel.daterangepicker', function(ev, picker) {
+                  $(this).val('');
+                });
+
+            }
+        });
+    });
+
+
+
+});
+</script>
+{% endblock %}

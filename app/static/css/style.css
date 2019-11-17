@@ -1,0 +1,63 @@
+.item{
+border-bottom: 1px dotted #777;
+height:50px;
+}
+
+.jirakey,.summary,.creator,.created_time,.schedule,.schedules,.submit{
+float:left;
+padding-right: 5px;
+padding-left: 5px;
+height:50px;
+line-height:50px;
+display: inline-block;
+}
+
+.jirakey{width:8%}
+.summary{width:20%}
+.creator{width:8%}
+.created_time{width:8%}
+.schedule{width:12%;line-height:25px;}
+.schedules{width:12%}
+.submit{width:8%}
+
+.schedule p{
+margin: 0px;
+}
+
+.item .summary{
+overflow: hidden;/*超出部分隐藏*/
+white-space: nowrap;/*不换行*/
+text-overflow: ellipsis;/*超出部分文字以...显示*/
+}
+
+#showform{
+
+}
+
+#showform div{
+width:70%;
+
+}
+
+.form-group input{
+display: block;
+width: 100%;
+height: 34px;
+padding: 6px 12px;
+font-size: 14px;
+line-height: 1.42857143;
+color: #555;
+background-color: #fff;
+background-image: none;
+border: 1px solid #ccc;
+border-radius: 4px;
+-webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+      box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+-webkit-transition: border-color ease-in-out .15s, -webkit-box-shadow ease-in-out .15s;
+   -o-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+      transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+}
+
+.navbar-default{
+border:none;
+}

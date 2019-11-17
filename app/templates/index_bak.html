@@ -1,0 +1,107 @@
+{% extends 'base.html' %}
+{% from 'bootstrap/pagination.html' import render_pagination %}
+
+{% block content %}
+<div class="container">
+        <div class="item center-block">
+            <div class="jirakey">
+                jira编号
+            </div>
+            <div class="summary">
+                需求标题
+            </div>
+            <div class="creator">
+                产品经理
+            </div>
+            <div class="created_time">
+                创建时间
+            </div>
+            <div class="schedule">
+                UI排期
+            </div>
+            <div class="schedule">
+                后端排期
+            </div>
+            <div class="schedule">
+                前端排期
+            </div>
+            <div class="schedule">
+                测试排期
+            </div>
+            <div class="submit">
+                操作
+            </div>
+
+        </div>
+
+{% if issues %}
+    {% for issue in issues %}
+        <div class="item center-block">
+            <div class="jirakey">
+                {{ issue.key }}
+            </div>
+            <div class="summary">
+                {{ issue.summary }}
+            </div>
+            <div class="creator">
+                {{ issue.creator }}
+            </div>
+            <div class="created_time">
+                {{ issue.created_time }}
+            </div>
+            <form action="{{ url_for('edit',issue_id=issue.id) }}" method="post" id="{{issue.id}}">
+                {{ form.hidden_tag() }}
+                <div class="schedule">
+                    {{ form.ui_schedule }}
+
+                </div>
+                <div class="schedule">
+                    {{ form.back_schedule }}
+                </div>
+                <div class="schedule">
+                    {{ form.front_schedule }}
+                </div>
+                <div class="schedule">
+                    {{ form.test_schedule }}
+                </div>
+                <div class="submit">
+                    {{ form.submit }}
+                </div>
+            </form>
+        </div>
+
+    {% endfor %}
+    {{ render_pagination(pagination) }}
+{% endif %}
+
+
+</div>
+{% endblock content %}
+
+{% block scripts %}
+{{ super() }}
+
+<script type="text/javascript">
+$(function() {
+  $('input[type="text"]').daterangepicker({
+      autoUpdateInput: false,
+      showDropdowns:false,
+      locale: {
+            format: "YYYY-MM-DD", //设置显示格式
+            applyLabel: '确定', //确定按钮文本
+            cancelLabel: '取消', //取消按钮文本
+            daysOfWeek: ['日', '一', '二', '三', '四', '五', '六'],
+            monthNames: ['一月', '二月', '三月', '四月', '五月', '六月',
+            '七月', '八月', '九月', '十月', '十一月', '十二月'
+            ]
+      }
+  });
+  $('input[type="text"]').on('apply.daterangepicker', function(ev, picker) {
+      $(this).val(picker.startDate.format('YYYY-MM-DD') + ' - ' + picker.endDate.format('YYYY-MM-DD'));
+  });
+  $('input[type="text"]').on('cancel.daterangepicker', function(ev, picker) {
+      $(this).val('');
+  });
+});
+</script>
+{% endblock %}

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    {% block head %}
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>{% block title %}{% endblock title %} - shihaonan's blog</title>
+    <meta http-equiv="keywords" content="关键词1,keyword2,keyword3">
+    <meta http-equiv="description" content="这是描述">
+    <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" type="text/css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+
+
+    {% endblock %}
+</head>
+<body>
+{% block nav %}
+<nav class="navbar navbar-default">
+  <div id="navbody" class="container">
+    <div class="navbar-header">
+      <a class="navbar-brand" >JIRA-SCHEDULE</a>
+    </div>
+    <div id="navbar" class="collapse navbar-collapse">
+      <ul class="nav navbar-nav">
+            <li class="nav-item">
+
+            </li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div>
+</nav>
+
+{% endblock %}
+
+<main class="container" id="mainbody">
+    {% for message in get_flashed_messages() %}
+        <div class="alert bg-success">{{ message }}</div>
+    {% endfor %}
+    {% block content %} {% endblock content %}
+</main>
+
+{% block footer %}
+<footer class="footer text-center">
+    <p class="small">haonan © 2019</p>
+    <p class="small">Powered by haonan</p>
+
+
+</footer>
+{% endblock footer %}
+
+
+
+{% block scripts %}
+<script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+{% endblock %}
+</body>
+</html>

@@ -1,0 +1,23 @@
+    <form action="{{ url_for('edit',issue_id=issue.id) }}" method="post" id="schedule_form">
+        {{ form.hidden_tag() }}
+        <div class="form-group scheduleform">
+            <span>UI排期</span>
+             {{ form.ui_schedule }}
+        </div>
+        <div class="form-group scheduleform">
+            <span>后端排期</span>
+            {{ form.back_schedule }}
+        </div>
+        <div class="form-group scheduleform">
+            <span>前端排期</span>
+            {{ form.front_schedule }}
+        </div>
+        <div class="form-group scheduleform">
+            <span>测试排期</span>
+            {{ form.test_schedule }}
+        </div>
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary">提交</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+        </div>
+    </form>
