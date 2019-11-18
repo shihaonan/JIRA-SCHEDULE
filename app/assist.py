@@ -5,11 +5,11 @@ from time import strptime,strftime
 
 server='http://10.9.11.254'
 jira = JIRA(server,basic_auth=('shihaonan','haonan1124'))
-
-jql = 'project = DSG AND issuetype in (Bug, 需求) AND creator in (membersOf(产品组))'
 need_fields = 'status,created,summary,creator'
 
-def jira_connect():
+# 获取全部数据
+def jira_get_all():
+    jql = 'project = DSG AND issuetype in (Bug, 财务需求,需求) AND creator in (membersOf(产品组))'
     issues = jira.search_issues(jql,fields=need_fields,maxResults=1000)
     for issue in issues:
         new_issue = Issue(
@@ -23,7 +23,18 @@ def jira_connect():
         db.session.add(new_issue)
         db.session.commit()
 
-# jira_connect()
+# 获取过去1天的增量数据
+def jira_get_new():
+    jql = 'project = DSG AND issuetype in (Bug, 财务需求, 需求) AND created >= -1d AND creator in (membersOf(产品组))'
+    issues = jira.search_issues(jql,fields=need_fields,maxResults=100)
+    existing_issues = Issue.query.all()
+    # for issue in issues:
+    #     for existing_issue in existing_issues:
+    #         if issue.key != existing_issue.key:
+    #             existing_issue.status = issue.status
+    #             existing_issue.summary = issue.summary
+    #             db.session.commit()
+
 
 
 # a=1

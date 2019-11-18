@@ -1,9 +1,23 @@
+#mainbody{
+width:1260px;
+font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Helvetica, "Nimbus Sans L", Arial, "Liberation Sans", "PingFang SC", "Hiragino Sans GB", "Source Han Sans CN", "Source Han Sans SC", "Microsoft YaHei", "Wenquanyi Micro Hei", "WenQuanYi Zen Hei", "ST Heiti", SimHei, "WenQuanYi Zen Hei Sharp", sans-serif;
+font-size: 13px;
+font-weight: 300;
+letter-spacing: 0.01rem;
+color: #333333;
+}
+
+.navbar-brand{
+color: #333333 !important;
+font-weight: 700;
+}
+
 .item{
 border-bottom: 1px dotted #777;
 height:50px;
 }
 
-.jirakey,.summary,.creator,.created_time,.schedule,.schedules,.submit{
+.jirakey,.summary,.creator,.created_time,.jira_status,.pro_status,.schedule,.schedules,.submit{
 float:left;
 padding-right: 5px;
 padding-left: 5px;
@@ -16,8 +30,10 @@ display: inline-block;
 .summary{width:20%}
 .creator{width:8%}
 .created_time{width:8%}
-.schedule{width:12%;line-height:25px;}
-.schedules{width:12%}
+.jira_status{width:8%}
+.pro_status{width:8%}
+.schedule{width:9%;line-height:25px;}
+.schedules{width:9%}
 .submit{width:8%}
 
 .schedule p{
@@ -60,4 +76,11 @@ border-radius: 4px;
 
 .navbar-default{
 border:none;
+}
+
+.nodata{
+margin:100px auto 20px;
+width:300px;
+height:100px;
+text-align:center;
 }

@@ -13,8 +13,11 @@
             <div class="creator">
                 产品经理
             </div>
-            <div class="created_time">
-                创建时间
+            <div class="jira_status">
+                jira状态
+            </div>
+            <div class="pro_status">
+                项目状态
             </div>
             <div class="schedules">
                 UI排期
@@ -46,8 +49,13 @@
             <div class="creator">
                 {{ issue.creator }}
             </div>
-            <div class="created_time">
-                {{ issue.created_time }}
+            <div class="jira_status">
+                {{ issue.status }}
+            </div>
+            <div class="pro_status">
+                {% if issue.pro_status %}
+                {{ issue.pro_status.name }}
+                {% endif %}
             </div>
             <div class="schedule">
                 {% if issue.ui_schedule %}
@@ -79,9 +87,12 @@
 
         </div>
     {% endfor %}
-
     {{ render_pagination(pagination) }}
 
+{% else %}
+    <div class="nodata">
+        <p class="center">这个状态下没有数据</p>
+    </div>
 {% endif %}
 
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -153,7 +164,14 @@ $(function() {
         });
     });
 
-
+     $("#nav-bar").find("li").each(function () {
+            var a = $(this).find("a:first")[0];
+            if ($(a).attr("href") === location.pathname) {
+                $(this).addClass("active");
+            } else {
+                $(this).removeClass("active");
+            }
+        });
 
 });
 </script>

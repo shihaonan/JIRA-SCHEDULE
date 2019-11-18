@@ -1,6 +1,10 @@
     <form action="{{ url_for('edit',issue_id=issue.id) }}" method="post" id="schedule_form">
         {{ form.hidden_tag() }}
         <div class="form-group scheduleform">
+            <span>更改项目状态</span>
+             {{ form.pro_status }}
+        </div>
+        <div class="form-group scheduleform">
             <span>UI排期</span>
              {{ form.ui_schedule }}
         </div>
