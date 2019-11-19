@@ -1,19 +1,23 @@
 from jira import JIRA
 from app import db
-from app.models import Issue
+from app.models import Issue,LastTime
 from time import strptime,strftime
+from datetime import date,timedelta
 
 server='http://10.9.11.254'
 jira = JIRA(server,basic_auth=('shihaonan','haonan1124'))
 need_fields = 'status,created,summary,creator'
 
+
 # 获取全部数据
 def jira_get_all():
     jql = 'project = DSG AND issuetype in (Bug, 财务需求,需求) AND creator in (membersOf(产品组))'
     issues = jira.search_issues(jql,fields=need_fields,maxResults=1000)
+    all_issues_num = 0
     for issue in issues:
         new_issue = Issue(
             key=issue.key,
+            jira_id=int(issue.id),
             status=issue.fields.status.name,
             created_time= strftime("%Y-%m-%d", strptime(issue.fields.created[0:10],'%Y-%m-%d')),
             summary=issue.fields.summary,
@@ -22,24 +26,44 @@ def jira_get_all():
         )
         db.session.add(new_issue)
         db.session.commit()
+        all_issues_num += 1
+    return '获取全部记录，共查询了 %s 条' % all_issues_num
 
-# 获取过去1天的增量数据
+
+# 获取上次请求时间到现在的增量数据,本地已存在的更新字段，本地不存在的新建记录
 def jira_get_new():
-    jql = 'project = DSG AND issuetype in (Bug, 财务需求, 需求) AND created >= -1d AND creator in (membersOf(产品组))'
-    issues = jira.search_issues(jql,fields=need_fields,maxResults=100)
-    existing_issues = Issue.query.all()
-    # for issue in issues:
-    #     for existing_issue in existing_issues:
-    #         if issue.key != existing_issue.key:
-    #             existing_issue.status = issue.status
-    #             existing_issue.summary = issue.summary
-    #             db.session.commit()
+    last_time = LastTime.query.first()
+    if not last_time:
+        last_time = LastTime(last_request_time=date.today())
+        db.session.add(last_time)
+        db.session.commit()
+    msg1 = '上次请求时间：%s 。' % last_time.last_request_time
+    jql = 'project = DSG AND issuetype in (Bug, 财务需求, 需求) AND updated >= %s AND creator in (membersOf(产品组))' % last_time.last_request_time
+    issues = jira.search_issues(jql, fields=need_fields, maxResults=100)
+    existing_issues_num = 0
+    new_issues_num = 0
+    for issue in issues:
+        existing_issue = Issue.query.filter_by(key=issue.key).first()
+        if existing_issue:
+            existing_issue.status = issue.fields.status.name
+            existing_issue.summary = issue.fields.summary
+            db.session.commit()
+            existing_issues_num += 1
+        else:
+            new_issue = Issue(
+                key=issue.key,
+                jira_id=int(issue.id),
+                status=issue.fields.status.name,
+                created_time=strftime("%Y-%m-%d", strptime(issue.fields.created[0:10], '%Y-%m-%d')),
+                summary=issue.fields.summary,
+                creator=issue.fields.creator.displayName,
+                url=str(server + '/browse/' + issue.key)
+            )
+            db.session.add(new_issue)
+            db.session.commit()
+            new_issues_num += 1
+    last_time.last_request_time = date.today()
+    db.session.commit()
+    return msg1 + '共查询了 %s 条记录，更新了 %s 条已存在记录，新增 %s 条记录' % (existing_issues_num + new_issues_num, existing_issues_num, new_issues_num)
 
-
-
-# a=1
-# for issue in issues:
-#     print(a,issue.fields.created,issue,issue.fields.summary,issue.fields.creator)
-#     print(server+'/browse/'+issue.key)
-#     a+=1
 

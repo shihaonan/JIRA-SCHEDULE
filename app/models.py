@@ -3,6 +3,7 @@ from app import db
 class Issue(db.Model):
     __tablename__ = 'issues'
     id = db.Column(db.Integer, primary_key=True)
+    jira_id = db.Column(db.Integer, unique=True, index=True)
     key = db.Column(db.String(20), unique=True,index=True)
     status = db.Column(db.String(30))
     pro_status_id = db.Column(db.Integer, db.ForeignKey('pro_status.id'))
@@ -21,6 +22,11 @@ class ProStatus(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(30), unique=True)
     issues = db.relationship('Issue',backref='pro_status',lazy='dynamic')
+
+class LastTime(db.Model):
+    __tablename__ = 'last_time'
+    id = db.Column(db.Integer, primary_key=True)
+    last_request_time = db.Column(db.Date)
 
 
 

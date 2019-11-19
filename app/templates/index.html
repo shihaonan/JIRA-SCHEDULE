@@ -39,12 +39,12 @@
 
 {% if issues %}
     {% for issue in issues %}
-        <div class="item center-block">
+        <div class="item center-block" id="{{ issue.id }}">
             <div class="jirakey">
                 {{ issue.key }}
             </div>
             <div class="summary">
-                {{ issue.summary }}
+                <a href="{{ issue.url }}" target="_blank">{{ issue.summary }}</a>
             </div>
             <div class="creator">
                 {{ issue.creator }}
@@ -127,9 +127,6 @@
 {{ super() }}
 
 <script type="text/javascript">
-
-
-
 $(function() {
 //表单
     $('.edit').click(function(){
@@ -160,6 +157,35 @@ $(function() {
                   $(this).val('');
                 });
 
+                $('#ajaxsubmit').click(function(){
+                    var pro_status_value = $('#pro_status').val();
+                    var ui_schedule_value = $('#ui_schedule').val();
+                    var back_schedule_value = $('#back_schedule').val();
+                    var front_schedule_value = $('#front_schedule').val();
+                    var test_schedule_value = $('#test_schedule').val();
+
+                    $.ajax({
+                        type:'POST',
+                        url:'/ajaxedit/'+issue_id,
+                        data:{
+                            pro_status: pro_status_value,
+                            ui_schedule: ui_schedule_value,
+                            back_schedule: back_schedule_value,
+                            front_schedule: front_schedule_value,
+                            test_schedule: test_schedule_value
+                        },
+                        success:function(data){
+                            $("#myModal").modal('hide');
+                            //$('#issue_id').children('.pro_status').html(data.pro_status);
+                            window.location.reload()
+                        },
+                        error:function(){
+                            alert("请求失败");
+                            console.log(data.errmsg);
+                        }
+                   })
+                })
+
             }
         });
     });
@@ -172,7 +198,7 @@ $(function() {
                 $(this).removeClass("active");
             }
         });
-
 });
+
 </script>
 {% endblock %}
