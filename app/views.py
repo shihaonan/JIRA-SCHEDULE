@@ -3,6 +3,7 @@ from app.models import Issue,ProStatus
 from flask import jsonify,render_template,url_for,request,current_app,redirect,flash
 from app.assist import jira_get_new,jira_get_all
 from app.forms import ScheduleForm
+import flask_excel as excel
 
 @app.route('/')
 def index():
@@ -49,13 +50,13 @@ def ajax_edit(issue_id):
     issue.test_schedule = request.form.get('test_schedule')
     db.session.commit()
     flash('%s %s 操作成功' % (issue.key,issue.summary))
-    return 'ok'
-    # return jsonify(pro_status=ProStatus.query.get_or_404(issue.pro_status_id),
-    #                ui_schedule=issue.ui_schedule,
-    #                back_schedule=issue.back_schedule,
-    #                front_schedule=issue.front_schedule,
-    #                test_schedule=issue.test_schedule
-    #                )
+    # return 'ok'
+    return jsonify(pro_status=ProStatus.query.get_or_404(issue.pro_status_id).name,
+                   ui_schedule=issue.ui_schedule,
+                   back_schedule=issue.back_schedule,
+                   front_schedule=issue.front_schedule,
+                   test_schedule=issue.test_schedule
+                   )
 
 
 @app.route('/edit/<int:issue_id>',methods=['POST'])
@@ -70,8 +71,50 @@ def edit(issue_id):
         issue.test_schedule = form.test_schedule.data
         db.session.commit()
         flash('%s %s 操作成功' % (issue.key,issue.summary))
-        return redirect(url_for('index'))
+        if issue.pro_status_id:
+            url = '/project_status/' + str(issue.pro_status_id) + '#' + str(issue.id)
+        else:
+            url = '/#' + str(issue.id)
+        return redirect(url)
     return redirect(url_for('index'))
+
+
+@app.route('/search')
+def search():
+    q = request.args.get('q','')
+    if q == '':
+        flash('Enter keyword about photo, user or tag.', 'warning')
+        return redirect(url_for('index'))
+    all_pro_status = ProStatus.query.order_by(ProStatus.id).all()
+    page = request.args.get('page',1,type=int)
+    per_page = current_app.config['ISSUES_PER_PAGE']
+    pagination = Issue.query.whooshee_search(q).order_by(Issue.jira_id.desc()).paginate(page,per_page=per_page)
+    issues = pagination.items
+    return render_template('index.html',pagination=pagination,issues=issues,all_pro_status=all_pro_status)
+
+
+@app.route('/export')
+def export():
+    query_sets = Issue.query.all()
+    return excel.make_response_from_query_sets(
+        query_sets,
+        column_names=[
+            'id',
+            'key',
+            'status',
+            'pro_status_id',
+            'created_time',
+            'summary',
+            'creator',
+            'url',
+            'ui_schedule',
+            'back_schedule',
+            'front_schedule',
+            'test_schedule'
+        ],
+        file_type='xlsx',
+        file_name='全部需求.xlsx'
+    )
 
 
 @app.route('/getnew')

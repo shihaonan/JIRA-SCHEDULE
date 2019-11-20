@@ -4,7 +4,7 @@ from wtforms.validators import DataRequired
 from app.models import ProStatus
 
 class ScheduleForm(FlaskForm):
-    pro_status = SelectField(default=1,coerce=int)
+    pro_status = SelectField(label='无',coerce=int,default=None)
     ui_schedule = StringField()
     back_schedule = StringField()
     front_schedule = StringField()

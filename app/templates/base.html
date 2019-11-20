@@ -4,15 +4,13 @@
     {% block head %}
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>{% block title %}{% endblock title %} - shihaonan's blog</title>
-    <meta http-equiv="keywords" content="关键词1,keyword2,keyword3">
-    <meta http-equiv="description" content="这是描述">
+    <title>JIRA项目排期</title>
+    <meta http-equiv="keywords" content="关键词">
+    <meta http-equiv="description" content="描述">
     <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" type="text/css">
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
-
-
     {% endblock %}
 </head>
 <body>
@@ -25,14 +23,28 @@
     <div id="navbar" class="collapse navbar-collapse">
       <ul class="nav navbar-nav">
             <li class="nav-item">
-                <a href="{{ url_for('index') }}">首页</a>
+                <a href="{{ url_for('index') }}">全部</a>
             </li>
-
         {% for i in all_pro_status %}
             <li class="nav-item">
                 <a href="{{ url_for('project_status',pro_status_id=i.id) }}">{{ i.name }}</a>
             </li>
         {% endfor %}
+            <li class="nav-item">
+                <form class="form-inline" id="searchform" action="{{ url_for('search') }}">
+                    <input type="text" name="q" class="form-control mr-sm-1" placeholder="jira编号/需求标题/产品经理" required>
+                    <button class="btn btn-light my-2 my-sm-0" type="submit">
+                        <span class="oi oi-magnifying-glass">搜索</span>
+                    </button>
+                </form>
+            </li>
+            <li class="nav-item">
+                <a href="{{ url_for('export') }}" id="export">
+                    <button class="btn btn-light" >
+                        导出
+                    </button>
+                </a>
+            </li>
       </ul>
     </div><!--/.nav-collapse -->
   </div>

@@ -57,28 +57,28 @@
                 {{ issue.pro_status.name }}
                 {% endif %}
             </div>
-            <div class="schedule">
+            <div class="schedule ui_schedule">
                 {% if issue.ui_schedule %}
-                <p>{{ issue.ui_schedule[0:10] }}</p>
-                <p>{{ issue.ui_schedule[12:24] }}</p>
+                <p class="starttime">{{ issue.ui_schedule[0:10] }}</p>
+                <p class="endtime">{{ issue.ui_schedule[12:24] }}</p>
                 {% endif %}
             </div>
-            <div class="schedule">
+            <div class="schedule back_schedule">
                 {% if issue.back_schedule %}
-                <p>{{ issue.back_schedule[0:10] }}</p>
-                <p>{{ issue.back_schedule[12:24] }}</p>
+                <p class="starttime">{{ issue.back_schedule[0:10] }}</p>
+                <p class="endtime">{{ issue.back_schedule[12:24] }}</p>
                 {% endif %}
             </div>
-            <div class="schedule">
+            <div class="schedule front_schedule">
                 {% if issue.front_schedule %}
-                <p>{{ issue.front_schedule[0:10] }}</p>
-                <p>{{ issue.front_schedule[12:24] }}</p>
+                <p class="starttime">{{ issue.front_schedule[0:10] }}</p>
+                <p class="endtime">{{ issue.front_schedule[12:24] }}</p>
                 {% endif %}
             </div>
-            <div class="schedule">
+            <div class="schedule test_schedule">
                 {% if issue.test_schedule %}
-                <p>{{ issue.test_schedule[0:10] }}</p>
-                <p>{{ issue.test_schedule[12:24] }}</p>
+                <p class="starttime">{{ issue.test_schedule[0:10] }}</p>
+                <p class="endtime">{{ issue.test_schedule[12:24] }}</p>
                 {% endif %}
             </div>
             <div class="submit">
@@ -128,9 +128,10 @@
 
 <script type="text/javascript">
 $(function() {
-//表单
+    //监听编辑按钮点击事件
     $('.edit').click(function(){
         var issue_id=$(this).attr('data-id');
+        //请求表单
         $.ajax({
             type: 'GET',
             url:'/showform/'+issue_id,
@@ -157,6 +158,7 @@ $(function() {
                   $(this).val('');
                 });
 
+                //监听表单按钮提交事件
                 $('#ajaxsubmit').click(function(){
                     var pro_status_value = $('#pro_status').val();
                     var ui_schedule_value = $('#ui_schedule').val();
@@ -175,9 +177,13 @@ $(function() {
                             test_schedule: test_schedule_value
                         },
                         success:function(data){
-                            $("#myModal").modal('hide');
+                            //$("#myModal").modal('hide');
                             //$('#issue_id').children('.pro_status').html(data.pro_status);
-                            window.location.reload()
+                            //$('#issue_id').children('.ui_schedule').html(data.ui_schedule);
+                            //$('#issue_id').children('.back_schedule').html(data.back_schedule);
+                            //$('#issue_id').children('.front_schedule').html(data.front_schedule);
+                            //$('#issue_id').children('.test_schedule').html(data.test_schedule);
+                            //window.location.href = "https://www.runoob.com";
                         },
                         error:function(){
                             alert("请求失败");

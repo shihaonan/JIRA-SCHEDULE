@@ -1,5 +1,8 @@
 from app import db
+from app import whooshee
 
+
+@whooshee.register_model('key','summary','creator')
 class Issue(db.Model):
     __tablename__ = 'issues'
     id = db.Column(db.Integer, primary_key=True)

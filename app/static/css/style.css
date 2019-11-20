@@ -7,13 +7,55 @@ letter-spacing: 0.01rem;
 color: #333333;
 }
 
+#navbody{
+font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Helvetica, "Nimbus Sans L", Arial, "Liberation Sans", "PingFang SC", "Hiragino Sans GB", "Source Han Sans CN", "Source Han Sans SC", "Microsoft YaHei", "Wenquanyi Micro Hei", "WenQuanYi Zen Hei", "ST Heiti", SimHei, "WenQuanYi Zen Hei Sharp", sans-serif;
+font-weight: 300;
+letter-spacing: 0.01rem;
+color: #333333;
+}
+
 .navbar-brand{
 color: #333333 !important;
 font-weight: 700;
 }
 
+#searchform{
+    padding-top: 10px;
+    height:30px;
+}
+
+#searchform input {
+    height:30px;
+    font-size: 8px;
+    font-weight: 300;
+    border-radius: 4px 0px 0px 4px;
+    border: 1px solid #eceaea;
+}
+
+#searchform button {
+    height:30px;
+    font-size: 10px;
+    font-weight: 300;
+    border-radius: 0px 4px 4px 0px;
+    margin:-5px;
+    border: 1px solid #eceaea;
+}
+
+#export {
+    padding-top: 10px;
+    height:30px;
+
+}
+
+#export button {
+    height:30px;
+    font-size: 10px;
+    font-weight: 300;
+
+}
+
 .item{
-border-bottom: 1px dotted #777;
+border-bottom: 1px dashed #777;
 height:50px;
 }
 
@@ -36,8 +78,13 @@ display: inline-block;
 .schedules{width:9%}
 .submit{width:8%}
 
-.schedule p{
-margin: 0px;
+.starttime{
+margin: 5px 0 -5px 0;
+font-size: 10px;
+}
+.endtime{
+padding-bottom:5px;
+font-size: 10px;
 }
 
 .item .summary{
