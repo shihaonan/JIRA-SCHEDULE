@@ -1,10 +1,10 @@
 #mainbody{
-width:1260px;
 font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Helvetica, "Nimbus Sans L", Arial, "Liberation Sans", "PingFang SC", "Hiragino Sans GB", "Source Han Sans CN", "Source Han Sans SC", "Microsoft YaHei", "Wenquanyi Micro Hei", "WenQuanYi Zen Hei", "ST Heiti", SimHei, "WenQuanYi Zen Hei Sharp", sans-serif;
 font-size: 13px;
 font-weight: 300;
 letter-spacing: 0.01rem;
 color: #333333;
+text-align:center;
 }
 
 #navbody{
@@ -12,6 +12,7 @@ font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Helvetica, "Ni
 font-weight: 300;
 letter-spacing: 0.01rem;
 color: #333333;
+width:1260px;
 }
 
 .navbar-brand{
@@ -19,26 +20,15 @@ color: #333333 !important;
 font-weight: 700;
 }
 
-#searchform{
-    padding-top: 10px;
-    height:30px;
+#multisearchform{
+padding-top:20px;
+padding-bottom:30px;
 }
-
-#searchform input {
-    height:30px;
-    font-size: 8px;
-    font-weight: 300;
-    border-radius: 4px 0px 0px 4px;
-    border: 1px solid #eceaea;
+#jira_key{
+width:110px;
 }
-
-#searchform button {
-    height:30px;
-    font-size: 10px;
-    font-weight: 300;
-    border-radius: 0px 4px 4px 0px;
-    margin:-5px;
-    border: 1px solid #eceaea;
+#summary{
+width:150px;
 }
 
 #export {
@@ -55,9 +45,16 @@ font-weight: 700;
 }
 
 .item{
-border-bottom: 1px dashed #777;
-height:50px;
+width:1260px;
+height: 50px;
+text-align:left;
 }
+.bottom-line{
+background-image: linear-gradient(to right, #dedede 0%, #dedede 50%, transparent 50%);
+background-size: 12px 1px;
+background-repeat: repeat-x;
+}
+
 
 .jirakey,.summary,.creator,.created_time,.jira_status,.pro_status,.schedule,.schedules,.submit{
 float:left;
@@ -68,14 +65,14 @@ line-height:50px;
 display: inline-block;
 }
 
+
 .jirakey{width:8%}
 .summary{width:20%}
 .creator{width:8%}
-.created_time{width:8%}
 .jira_status{width:8%}
 .pro_status{width:8%}
-.schedule{width:9%;line-height:25px;}
-.schedules{width:9%}
+.schedule{width:10%;line-height:25px;}
+.schedules{width:10%}
 .submit{width:8%}
 
 .starttime{
@@ -87,24 +84,36 @@ padding-bottom:5px;
 font-size: 10px;
 }
 
-.item .summary{
+.item .summary,.item .jira_status{
 overflow: hidden;/*超出部分隐藏*/
 white-space: nowrap;/*不换行*/
 text-overflow: ellipsis;/*超出部分文字以...显示*/
 }
 
+.item a{
+color: #333333;
+}
+
+.item_active{
+background:#d9edf7;
+}
+
+.edit {
+height:30px;
+font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Helvetica, "Nimbus Sans L", Arial, "Liberation Sans", "PingFang SC", "Hiragino Sans GB", "Source Han Sans CN", "Source Han Sans SC", "Microsoft YaHei", "Wenquanyi Micro Hei", "WenQuanYi Zen Hei", "ST Heiti", SimHei, "WenQuanYi Zen Hei Sharp", sans-serif;
+font-size: 11px;
+font-weight: 300;
+letter-spacing: 0.01rem;
+background:#f3f3f3;
+}
+
 #showform{
-
+text-align:left;
 }
 
-#showform div{
-width:70%;
-
-}
 
 .form-group input{
 display: block;
-width: 100%;
 height: 34px;
 padding: 6px 12px;
 font-size: 14px;

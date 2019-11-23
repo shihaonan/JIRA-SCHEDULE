@@ -1,8 +1,5 @@
 from app import db
-from app import whooshee
 
-
-@whooshee.register_model('key','summary','creator')
 class Issue(db.Model):
     __tablename__ = 'issues'
     id = db.Column(db.Integer, primary_key=True)
@@ -14,10 +11,14 @@ class Issue(db.Model):
     summary = db.Column(db.String(256))
     creator = db.Column(db.String(30))
     url = db.Column(db.String(256))
-    ui_schedule = db.Column(db.String(256))
-    back_schedule = db.Column(db.String(256))
-    front_schedule = db.Column(db.String(256))
-    test_schedule = db.Column(db.String(256))
+    ui_schedule = db.Column(db.String(66))
+    back_schedule = db.Column(db.String(66))
+    front_schedule = db.Column(db.String(66))
+    test_schedule = db.Column(db.String(66))
+    ui_staff = db.Column(db.String(256))
+    back_staff = db.Column(db.String(256))
+    front_staff = db.Column(db.String(256))
+    test_staff = db.Column(db.String(256))
 
 
 class ProStatus(db.Model):

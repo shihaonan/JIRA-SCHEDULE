@@ -2,9 +2,32 @@
 {% from 'bootstrap/pagination.html' import render_pagination %}
 
 {% block content %}
-<div class="container">
+<form action="{{ url_for('multi_search') }} " id="multisearchform" class="form-inline">
+    <input class="form-control" id="jira_key" name="jira_key" type="text" value="{% if last_search['jira_key'] %}{{ last_search['jira_key'] }}{% endif %}" placeholder="输入jira编号">
+    <input class="form-control" id="summary" name="summary" type="text" value="{% if last_search['summary'] %}{{ last_search['summary'] }}{% endif %}" placeholder="输入jira标题">
+    <select class="form-control" id="pm" name="pm" value="产品经理">
+        <option value="">选择产品经理</option>
+        {% for pm in all_creator %}
+            <option value="{{ pm }}" {% if last_search['pm']==pm %}selected{% endif %}>{{ pm }}</option>
+        {% endfor %}
+    </select>
+    <select class="form-control" id="jira_status" name="jira_status">
+        <option value="">选择jira状态</option>
+        {% for jira_status in all_jira_status %}
+            <option value="{{ jira_status }}" {% if last_search['jira_status']==jira_status %}selected{% endif %}>{{ jira_status }}</option>
+        {% endfor %}
+    </select>
+    <select class="form-control" id="pro_status" name="pro_status">
+        <option value="">选择项目状态</option>
+        {% for pro_status in all_pro_status %}
+            <option value="{{ pro_status.id }}" {% if last_search['pro_status']==pro_status.id %}selected{% endif %}>{{ pro_status.name }}</option>
+        {% endfor %}
+    </select>
+    <input class="form-control" id="submit" name="submit" type="submit" value="搜索">
+</form>
+<div class="">
         <div class="item center-block">
-            <div class="jirakey">
+            <div class="jirakey firstlabel">
                 jira编号
             </div>
             <div class="summary">
@@ -39,7 +62,9 @@
 
 {% if issues %}
     {% for issue in issues %}
-        <div class="item center-block" id="{{ issue.id }}">
+
+        <div class="item center-block bottom-line" id="{{ issue.id }}">
+
             <div class="jirakey">
                 {{ issue.key }}
             </div>
@@ -58,31 +83,24 @@
                 {% endif %}
             </div>
             <div class="schedule ui_schedule">
-                {% if issue.ui_schedule %}
-                <p class="starttime">{{ issue.ui_schedule[0:10] }}</p>
-                <p class="endtime">{{ issue.ui_schedule[12:24] }}</p>
-                {% endif %}
+                <p class="starttime">{% if issue.ui_schedule %}{{ issue.ui_schedule[0:10] }}{% endif %}</p>
+                <p class="endtime">{% if issue.ui_schedule %}{{ issue.ui_schedule[12:24] }}{% endif %}</p>
             </div>
             <div class="schedule back_schedule">
-                {% if issue.back_schedule %}
-                <p class="starttime">{{ issue.back_schedule[0:10] }}</p>
-                <p class="endtime">{{ issue.back_schedule[12:24] }}</p>
-                {% endif %}
+
+                <p class="starttime">{% if issue.back_schedule %}{{ issue.back_schedule[0:10] }}{% endif %}</p>
+                <p class="endtime">{% if issue.back_schedule %}{{ issue.back_schedule[12:24] }}{% endif %}</p>
             </div>
             <div class="schedule front_schedule">
-                {% if issue.front_schedule %}
-                <p class="starttime">{{ issue.front_schedule[0:10] }}</p>
-                <p class="endtime">{{ issue.front_schedule[12:24] }}</p>
-                {% endif %}
+                <p class="starttime">{% if issue.front_schedule %}{{ issue.front_schedule[0:10] }}{% endif %}</p>
+                <p class="endtime">{% if issue.front_schedule %}{{ issue.front_schedule[12:24] }}{% endif %}</p>
             </div>
             <div class="schedule test_schedule">
-                {% if issue.test_schedule %}
-                <p class="starttime">{{ issue.test_schedule[0:10] }}</p>
-                <p class="endtime">{{ issue.test_schedule[12:24] }}</p>
-                {% endif %}
+                <p class="starttime">{% if issue.test_schedule %}{{ issue.test_schedule[0:10] }}{% endif %}</p>
+                <p class="endtime">{% if issue.test_schedule %}{{ issue.test_schedule[12:24] }}{% endif %}</p>
             </div>
             <div class="submit">
-                <button class="edit btn btn-primary" data-id="{{ issue.id }}" data-issue="{{issue}}" data-toggle="modal" data-target="#myModal">排期</button>
+                <button class="edit btn" data-id="{{ issue.id }}" data-issue="{{issue}}" data-toggle="modal" data-target="#myModal">排期</button>
             </div>
 
         </div>
@@ -97,25 +115,8 @@
 
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
-                    &times;
-                </button>
-                <h4 class="modal-title" id="myModalLabel">
-                    排期
-                </h4>
-            </div>
-            <div class="modal-body" id="showform">
+        <div class="modal-content" id="showform">
 
-            </div>
-<!--            <div class="modal-footer">-->
-<!--                <button type="button" class="btn btn-default" data-dismiss="modal">关闭-->
-<!--                </button>-->
-<!--                <button type="submit" class="btn btn-primary">-->
-<!--                    提交-->
-<!--                </button><span id="tip"> </span>-->
-<!--            </div>-->
         </div><!-- /.modal-content -->
     </div><!-- /.modal -->
 </div>
@@ -139,7 +140,7 @@ $(function() {
                 console.log(data);
                 $('#showform').html(data.html);
                 //时间选择器
-                $('.scheduleform').children('input').daterangepicker({
+                $('.scheduleform').daterangepicker({
                       autoUpdateInput: false,
                       showDropdowns:false,
                       locale: {
@@ -151,20 +152,24 @@ $(function() {
                             '七月', '八月', '九月', '十月', '十一月', '十二月']
                       }
                 });
-                $('.scheduleform').children('input').on('apply.daterangepicker', function(ev, picker) {
+                $('.scheduleform').on('apply.daterangepicker', function(ev, picker) {
                   $(this).val(picker.startDate.format('YYYY-MM-DD') + ' - ' + picker.endDate.format('YYYY-MM-DD'));
                 });
-                $('.scheduleform').children('input').on('cancel.daterangepicker', function(ev, picker) {
+                $('.scheduleform').on('cancel.daterangepicker', function(ev, picker) {
                   $(this).val('');
                 });
 
                 //监听表单按钮提交事件
                 $('#ajaxsubmit').click(function(){
-                    var pro_status_value = $('#pro_status').val();
+                    var pro_status_value = $('#pro_status_form').val();
                     var ui_schedule_value = $('#ui_schedule').val();
                     var back_schedule_value = $('#back_schedule').val();
                     var front_schedule_value = $('#front_schedule').val();
                     var test_schedule_value = $('#test_schedule').val();
+                    var ui_staff_value = $('#ui_staff').val();
+                    var back_staff_value = $('#back_staff').val();
+                    var front_staff_value = $('#front_staff').val();
+                    var test_staff_value = $('#test_staff').val();
 
                     $.ajax({
                         type:'POST',
@@ -174,15 +179,26 @@ $(function() {
                             ui_schedule: ui_schedule_value,
                             back_schedule: back_schedule_value,
                             front_schedule: front_schedule_value,
-                            test_schedule: test_schedule_value
+                            test_schedule: test_schedule_value,
+                            ui_staff: ui_staff_value,
+                            back_staff: back_staff_value,
+                            front_staff: front_staff_value,
+                            test_staff: test_staff_value
                         },
                         success:function(data){
-                            //$("#myModal").modal('hide');
-                            //$('#issue_id').children('.pro_status').html(data.pro_status);
-                            //$('#issue_id').children('.ui_schedule').html(data.ui_schedule);
-                            //$('#issue_id').children('.back_schedule').html(data.back_schedule);
-                            //$('#issue_id').children('.front_schedule').html(data.front_schedule);
-                            //$('#issue_id').children('.test_schedule').html(data.test_schedule);
+                             //alert("请求成功",data);
+                             console.log(data);
+                            $("#myModal").modal('hide');
+                            $('#'+issue_id).addClass("item_active");
+                            $('#'+issue_id).children('.pro_status').text(data.pro_status);
+                            $('#'+issue_id).children('.ui_schedule').children('.starttime').text(data.ui_schedule.slice(0,10));
+                            $('#'+issue_id).children('.ui_schedule').children('.endtime').text(data.ui_schedule.slice(12,24));
+                            $('#'+issue_id).children('.back_schedule').children('.starttime').text(data.back_schedule.slice(0,10));
+                            $('#'+issue_id).children('.back_schedule').children('.endtime').text(data.back_schedule.slice(12,24));
+                            $('#'+issue_id).children('.front_schedule').children('.starttime').text(data.front_schedule.slice(0,10));
+                            $('#'+issue_id).children('.front_schedule').children('.endtime').text(data.front_schedule.slice(12,24));
+                            $('#'+issue_id).children('.test_schedule').children('.starttime').text(data.test_schedule.slice(0,10));
+                            $('#'+issue_id).children('.test_schedule').children('.endtime').text(data.test_schedule.slice(12,24));
                             //window.location.href = "https://www.runoob.com";
                         },
                         error:function(){
