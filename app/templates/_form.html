@@ -2,12 +2,12 @@
     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
         &times;
     </button>
-    <h4 class="modal-title" id="myModalLabel">
-        排期：{{ issue.key+' '+issue.summary }}
-    </h4>
+    <h6 class="modal-title" id="myModalLabel">
+        {{ issue.key+' '+issue.summary }}
+    </h6>
 </div>
 <div class="modal-body" >
-    <form action="{{ url_for('edit',issue_id=issue.id) }}" method="post" id="schedule_form">
+    <form action="" method="post" id="schedule_form">
         <div class="form-group form-inline">
             <span>项目状态</span>
                 <select class="form-control" id="pro_status_form" name="pro_status">

@@ -31,17 +31,30 @@ width:110px;
 width:150px;
 }
 
-#export {
-    padding-top: 10px;
-    height:30px;
+.pull-right .btnlink {
+padding: 10px 5px !important;
 
 }
 
-#export button {
+.pull-right button {
     height:30px;
     font-size: 10px;
     font-weight: 300;
 
+}
+
+.flashinfo{
+position:fixed;
+top:70px;
+right:-5px;
+}
+.bg-success{
+padding: 15px;
+margin-bottom: 5px;
+border-top-left-radius: 5px;
+border-top-right-radius: 0px;
+border-bottom-right-radius: 0px;
+border-bottom-left-radius: 5px;
 }
 
 .item{
@@ -139,4 +152,10 @@ margin:100px auto 20px;
 width:300px;
 height:100px;
 text-align:center;
+}
+
+.fa-check-circle{
+color:#75c8f1;
+padding-left: 10px;
+
 }

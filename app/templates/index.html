@@ -101,6 +101,7 @@
             </div>
             <div class="submit">
                 <button class="edit btn" data-id="{{ issue.id }}" data-issue="{{issue}}" data-toggle="modal" data-target="#myModal">排期</button>
+
             </div>
 
         </div>
@@ -190,6 +191,7 @@ $(function() {
                              console.log(data);
                             $("#myModal").modal('hide');
                             $('#'+issue_id).addClass("item_active");
+                            $('#'+issue_id).children('.submit').append('<i class="fa fa-check-circle fa-lg"></i>');
                             $('#'+issue_id).children('.pro_status').text(data.pro_status);
                             $('#'+issue_id).children('.ui_schedule').children('.starttime').text(data.ui_schedule.slice(0,10));
                             $('#'+issue_id).children('.ui_schedule').children('.endtime').text(data.ui_schedule.slice(12,24));
@@ -199,7 +201,12 @@ $(function() {
                             $('#'+issue_id).children('.front_schedule').children('.endtime').text(data.front_schedule.slice(12,24));
                             $('#'+issue_id).children('.test_schedule').children('.starttime').text(data.test_schedule.slice(0,10));
                             $('#'+issue_id).children('.test_schedule').children('.endtime').text(data.test_schedule.slice(12,24));
-                            //window.location.href = "https://www.runoob.com";
+                            bootoast({
+                                message: data.msg,
+                                type: 'success',
+                                position:'right-bottom',
+                                timeout: 4
+                            });
                         },
                         error:function(){
                             alert("请求失败");
@@ -212,14 +219,37 @@ $(function() {
         });
     });
 
-     $("#nav-bar").find("li").each(function () {
-            var a = $(this).find("a:first")[0];
-            if ($(a).attr("href") === location.pathname) {
-                $(this).addClass("active");
-            } else {
-                $(this).removeClass("active");
+    $("#nav-bar").find("li").each(function () {
+        var a = $(this).find("a:first")[0];
+        if ($(a).attr("href") === location.pathname) {
+            $(this).addClass("active");
+        } else {
+            $(this).removeClass("active");
+        }
+    });
+
+    $("#get_new").click(function(){
+        $.ajax({
+            url:'/getnew',
+            success:function(data){
+                bootoast({
+                    message: data.msg,
+                    type: 'success',
+                    position:'right-bottom',
+                    timeout: 5
+                });
+            },
+            error:function(){
+                bootoast({
+                    message:'拉取失败，联系浩楠！',
+                    type: 'warning',
+                    position:'right-bottom',
+                    timeout: 5
+                });
+                console.log(data.errmsg);
             }
-        });
+       })
+    });
 });
 
 </script>

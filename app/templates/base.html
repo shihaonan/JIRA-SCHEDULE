@@ -11,6 +11,8 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" type="text/css">
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootoast.css') }}" type="text/css">
     {% endblock %}
 </head>
 <body>
@@ -32,10 +34,22 @@
         {% endfor %}
       </ul>
       <ul class="nav navbar-nav pull-right">
+             <li class="nav-item">
+                <a href="{{ url_for('readme') }}" target="_blank">
+                        GUIDE
+                </a>
+            </li>
             <li class="nav-item">
-                <a href="{{ url_for('export') }}" id="export">
+                <a class="btnlink" href="{{ url_for('export') }}" id="export">
                     <button class="btn btn-light" >
                         导出
+                    </button>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="btnlink" href="#" >
+                    <button class="btn btn-light" id="get_new">
+                        拉取
                     </button>
                 </a>
             </li>
@@ -43,14 +57,16 @@
     </div><!--/.nav-collapse -->
   </div>
 </nav>
-
 {% endblock %}
 
-<main class="" id="mainbody">
-    {% for message in get_flashed_messages() %}
-        <div class="alert bg-success">{{ message }}</div>
-    {% endfor %}
+<div class="flashinfo">
+{% for message in get_flashed_messages() %}
+    <div class="bg-success">{{ message }}</div>
+{% endfor %}
+</div>
 
+
+<main class="" id="mainbody">
     {% block content %} {% endblock content %}
 </main>
 
@@ -69,6 +85,7 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+<script src="{{ url_for('static', filename='js/bootoast.js') }}"></script>
 {% endblock %}
 </body>
 </html>
