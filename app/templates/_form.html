@@ -9,7 +9,7 @@
 <div class="modal-body" >
     <form action="" method="post" id="schedule_form">
         <div class="form-group form-inline">
-            <span>项目状态</span>
+            <span class="formlabel">项目状态</span>
                 <select class="form-control" id="pro_status_form" name="pro_status">
                     <option value="">选择项目状态</option>
                     {% for pro_status in all_pro_status %}
@@ -18,26 +18,26 @@
                 </select>
         </div>
         <div class="form-group form-inline">
-            <span>UI排期</span>
+            <span class="formlabel">UI排期</span>
             <input class="form-control scheduleform" id="ui_schedule" name="ui_schedule" type="text" value="{% if issue.ui_schedule %}{{ issue.ui_schedule }}{% endif %}" placeholder="尚未排时间">
             <input class="form-control" id="ui_staff" name="ui_staff" type="text" value="{% if issue.ui_staff %}{{ issue.ui_staff }}{% endif %}" placeholder="尚未排人">
         </div>
         <div class="form-group form-inline">
-            <span>后端排期</span>
+            <span class="formlabel">后端排期</span>
             <input class="form-control scheduleform" id="back_schedule" name="back_schedule" type="text" value="{% if issue.back_schedule %}{{ issue.back_schedule }}{% endif %}" placeholder="尚未排时间">
             <input class="form-control" id="back_staff" name="back_staff" type="text" value="{% if issue.back_staff %}{{ issue.back_staff }}{% endif %}" placeholder="尚未排人">
         </div>
         <div class="form-group form-inline">
-            <span>前端排期</span>
+            <span class="formlabel">前端排期</span>
             <input class="form-control scheduleform" id="front_schedule" name="front_schedule" type="text" value="{% if issue.front_schedule %}{{ issue.front_schedule }}{% endif %}" placeholder="尚未排时间">
             <input class="form-control" id="front_staff" name="front_staff" type="text" value="{% if issue.front_staff %}{{ issue.front_staff }}{% endif %}" placeholder="尚未排人">
         </div>
         <div class="form-group form-inline">
-            <span>测试排期</span>
+            <span class="formlabel">测试排期</span>
             <input class="form-control scheduleform" id="test_schedule" name="test_schedule" type="text" value="{% if issue.test_schedule %}{{ issue.test_schedule }}{% endif %}" placeholder="尚未排时间">
             <input class="form-control" id="test_staff" name="test_staff" type="text" value="{% if issue.test_staff %}{{ issue.test_staff }}{% endif %}" placeholder="尚未排人">
         </div>
-        <div class="form-group">
+        <div class="form-group form-ctrl">
             <button id="ajaxsubmit" class="btn btn-info" type="button" value="提交"">提交</button>
             <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
         </div>
