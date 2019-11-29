@@ -1,4 +1,5 @@
 from app import db
+from datetime import datetime
 
 class Issue(db.Model):
     __tablename__ = 'issues'
@@ -32,7 +33,12 @@ class LastTime(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     last_request_time = db.Column(db.Date)
 
-
+class Post(db.Model):
+    __tablename__ = 'post'
+    id = db.Column(db.Integer, primary_key=True)
+    body = db.Column(db.Text)
+    body_html = db.Column(db.Text)
+    timestamp = db.Column(db.DateTime, default=datetime.utcnow)
 
 
 

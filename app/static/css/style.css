@@ -167,5 +167,23 @@ text-align:center;
 .fa-check-circle{
 color:#75c8f1;
 padding-left: 10px;
+}
 
+.postform{
+width:800px;
+margin:20px auto;
+}
+
+.postform textarea{
+height:300px;
+}
+
+.main_post{
+background: #fff;
+width: 100%;
+max-width: 800px;
+padding: 20px 40px;
+box-shadow: 0.5rem 0.5rem 2rem 0 rgba(0, 0, 0, 0.2);
+margin-bottom:30px;
+border-radius: 10px;
 }

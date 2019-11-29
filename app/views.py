@@ -1,8 +1,9 @@
 from app import app,db
-from app.models import Issue,ProStatus
+from app.models import Issue,ProStatus,Post
 from flask import jsonify,render_template,url_for,request,current_app,redirect,flash
 from app.assist import jira_get_new,jira_get_all
 import flask_excel as excel
+from app.forms import PostForm
 
 @app.route('/')
 def index():
@@ -59,26 +60,6 @@ def ajax_edit(issue_id):
                    test_schedule=issue.test_schedule,
                    msg=msg
                    )
-
-
-# @app.route('/edit/<int:issue_id>',methods=['POST'])
-# def edit(issue_id):
-#     issue = Issue.query.get_or_404(issue_id)
-#     form = ScheduleForm()
-#     if form.validate_on_submit():
-#         issue.pro_status_id = form.pro_status.data
-#         issue.ui_schedule = form.ui_schedule.data
-#         issue.back_schedule = form.back_schedule.data
-#         issue.front_schedule = form.front_schedule.data
-#         issue.test_schedule = form.test_schedule.data
-#         db.session.commit()
-#         flash('%s %s 操作成功' % (issue.key,issue.summary))
-#         if issue.pro_status_id:
-#             url = '/project_status/' + str(issue.pro_status_id) + '#' + str(issue.id)
-#         else:
-#             url = '/#' + str(issue.id)
-#         return redirect(url)
-#     return redirect(url_for('index'))
 
 
 @app.route('/multisearch')
@@ -145,9 +126,41 @@ def get_all():
     a = jira_get_all()
     return a
 
+
 @app.route('/readme')
 def readme():
-    return render_template('README.html')
+    posts = Post.query.order_by(Post.timestamp.desc()).all()
+    main_post = Post.query.get_or_404(1)
+    return render_template('post.html',posts=posts,main_post=main_post)
+
+
+@app.route('/newpost',methods=['GET','POST'])
+def new_post():
+    form = PostForm()
+    if form.validate_on_submit():
+        body = form.body.data
+        body_html = form.body_html.data
+        post = Post(body=body,body_html=body_html)
+        db.session.add(post)
+        db.session.commit()
+        flash('文章发布成功')
+        return redirect(url_for('readme'))
+    return render_template('edit_post.html',form=form)
+
+
+@app.route('/editpost/<int:post_id>',methods=['GET','POST'])
+def edit_post(post_id):
+    form = PostForm()
+    post = Post.query.get_or_404(post_id)
+    if form.validate_on_submit():
+        post.body = form.body.data
+        post.body_html = form.body_html.data
+        db.session.commit()
+        flash('文章更新成功')
+        return redirect(url_for('readme'))
+    form.body.data = post.body
+    form.body_html.data = post.body_html
+    return render_template('edit_post.html', form=form)
 
 
 

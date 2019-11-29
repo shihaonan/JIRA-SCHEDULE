@@ -5,7 +5,7 @@ def init():
     pro_status = ProStatus.query.first()
     if not pro_status:
         print('Creating the default pro_status...')
-        pro_status1 = ProStatus(name='产品原型设计中')
+        pro_status1 = ProStatus(name='原型设计')
         pro_status2 = ProStatus(name='待技术评审')
         pro_status3 = ProStatus(name='待排期')
         pro_status4 = ProStatus(name='开发中')

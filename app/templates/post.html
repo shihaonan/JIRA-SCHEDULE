@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>更新readme</title>
+    <meta http-equiv="keywords" content="关键词">
+    <meta http-equiv="description" content="描述">
+    <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/timeline.css') }}" type="text/css">
+</head>
+<body>
+<div>
+    <div class="main_post">
+    {% if main_post.body_html %}
+        <div id="fancy-content">
+        {{ main_post.body_html|safe }}
+        </div>
+    {% else %}
+        <div>
+        {{ main_post.body }}
+        </div>
+    {% endif %}
+    </div>
+
+    <div class="timeline">
+        <div class="updatelog"><h3>更新日志</h3></div>
+    {% if posts %}
+    {% for post in posts %}
+        {% if post.id != main_post.id %}
+        <div class="entry">
+            <div class="title">
+                <span class="date">{{ post.timestamp.strftime('%B %d %Y') }}</span>
+            </div>
+            <div class="body">
+                <p>{{ post.body|striptags }}</p>
+            </div>
+        </div>
+         {% endif %}
+    {% endfor %}
+    {% endif %}
+    </div>
+
+
+    </div>
+</div>
+
+<script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.js"></script>
+</body>
+</html>
