@@ -1,0 +1,90 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="create_pro" >
+    <h3>创建大项目</h3>
+    <p>不建议使用此功能，除非真的需要，因通过此功能创建的项目没有jira ID。</p>
+    <p>严格的流程应该是先在jira创建issue，然后拉取到本地。</p>
+    <form action="{{ url_for('handle_big_pro') }}" method="post" id="schedule_form">
+        <div class="form-group form-inline">
+            <span class="formlabel xrequired">项目名称</span>
+            <input class="form-control form-alone" type="text" id="summary" name="summary" placeholder="必填">
+        </div>
+        <div class="form-group form-inline">
+            <span class="formlabel xrequired">产品经理</span>
+            <select class="form-control form-alone" id="pm" name="pm" value="产品经理">
+                <option value="">选择产品经理</option>
+                {% for pm in all_creator %}
+                <option value="{{ pm }}" >{{ pm }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="form-group form-inline">
+            <span class="formlabel xrequired">项目状态</span>
+            <select class="form-control form-alone" id="pro_status_form" name="pro_status">
+                <option value="">选择项目状态</option>
+                {% for pro_status in all_pro_status %}
+                    <option value="{{ pro_status.id }}" >{{ pro_status.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="form-group form-inline">
+            <span class="formlabel">UI排期</span>
+            <input class="form-control scheduleform" id="ui_schedule" name="ui_schedule" type="text" value="" placeholder="尚未排时间">
+            <input class="form-control" id="ui_staff" name="ui_staff" type="text" value="" placeholder="尚未排人">
+        </div>
+        <div class="form-group form-inline">
+            <span class="formlabel">后端排期</span>
+            <input class="form-control scheduleform" id="back_schedule" name="back_schedule" type="text" value="" placeholder="尚未排时间">
+            <input class="form-control" id="back_staff" name="back_staff" type="text"  placeholder="尚未排人">
+        </div>
+        <div class="form-group form-inline">
+            <span class="formlabel">前端排期</span>
+            <input class="form-control scheduleform" id="front_schedule" name="front_schedule" type="text"  placeholder="尚未排时间">
+            <input class="form-control" id="front_staff" name="front_staff" type="text"  placeholder="尚未排人">
+        </div>
+        <div class="form-group form-inline">
+            <span class="formlabel">测试排期</span>
+            <input class="form-control scheduleform" id="test_schedule" name="test_schedule" type="text"  placeholder="尚未排时间">
+            <input class="form-control" id="test_staff" name="test_staff" type="text"  placeholder="尚未排人">
+        </div>
+        <div class="form-group form-ctrl">
+            <button id="ajaxsubmit" class="btn btn-info" type="submit" value="submit"">提交</button>
+        </div>
+    </form>
+</div>
+
+{% endblock %}
+
+
+{% block scripts %}
+{{ super() }}
+
+<script type="text/javascript">
+$(function() {
+   //时间选择器
+    $('.scheduleform').daterangepicker({
+          autoUpdateInput: false,
+          showDropdowns:false,
+          locale: {
+                format: "YYYY-MM-DD", //设置显示格式
+                applyLabel: '确定', //确定按钮文本
+                cancelLabel: '取消', //取消按钮文本
+                daysOfWeek: ['日', '一', '二', '三', '四', '五', '六'],
+                monthNames: ['一月', '二月', '三月', '四月', '五月', '六月',
+                '七月', '八月', '九月', '十月', '十一月', '十二月']
+          }
+    });
+    $('.scheduleform').on('apply.daterangepicker', function(ev, picker) {
+      $(this).val(picker.startDate.format('YYYY-MM-DD') + ' - ' + picker.endDate.format('YYYY-MM-DD'));
+    });
+    $('.scheduleform').on('cancel.daterangepicker', function(ev, picker) {
+      $(this).val('');
+    });
+
+});
+
+</script>
+{% endblock %}

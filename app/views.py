@@ -3,7 +3,7 @@ from app.models import Issue,ProStatus,Post
 from flask import jsonify,render_template,url_for,request,current_app,redirect,flash
 from app.assist import jira_get_new,jira_get_all
 import flask_excel as excel
-from app.forms import PostForm
+from app.forms import PostForm,CreateBigIssueForm
 
 @app.route('/')
 def index():
@@ -12,6 +12,7 @@ def index():
     per_page = current_app.config['ISSUES_PER_PAGE']
     pagination = Issue.query.order_by(Issue.jira_id.desc()).paginate(page,per_page=per_page)
     issues = pagination.items
+    # db.session.close()
     return render_template('index.html',pagination=pagination,issues=issues,last_search=last_search)
 
 # 项目状态分类视图
@@ -163,9 +164,52 @@ def edit_post(post_id):
     return render_template('edit_post.html', form=form)
 
 
+# @app.route('/showform/<int:issue_id>')
+# def show_form(issue_id):
+#     all_pro_status = ProStatus.query.order_by(ProStatus.id).all()
+#     issue = Issue.query.get_or_404(issue_id)
+#     return jsonify(html=render_template('_form.html',issue=issue,all_pro_status=all_pro_status))
 
 
+@app.route('/create_pro',methods=['GET','POST'])
+def create_pro():
+    return render_template('creat_pro.html')
 
+
+@app.route('/handle_big_pro',methods=['POST'])
+def handle_big_pro():
+    summary = request.form.get('summary')
+    creator = request.form.get('pm')
+    pro_status = request.form.get('pro_status')
+    if len(pro_status) > 0:
+        pro_status_id = int(pro_status)
+    ui_schedule = request.form.get("ui_schedule")
+    back_schedule = request.form.get('back_schedule')
+    front_schedule = request.form.get('front_schedule')
+    test_schedule = request.form.get('test_schedule')
+    ui_staff = request.form.get("ui_staff")
+    back_staff = request.form.get('back_staff')
+    front_staff = request.form.get('front_staff')
+    test_staff = request.form.get('test_staff')
+    is_pro = 1
+    big_pro = Issue(summary=summary,creator=creator,pro_status_id=pro_status_id,ui_schedule=ui_schedule,back_schedule=back_schedule,
+                    front_schedule=front_schedule,test_schedule=test_schedule,ui_staff=ui_staff,back_staff=back_staff,
+                    front_staff=front_staff,test_staff=test_staff,is_pro=is_pro)
+    db.session.add(big_pro)
+    db.session.commit()
+    msg = '%s 已更新' % summary
+    flash('文章发布成功')
+    return redirect(url_for('big_pro'))
+
+# 大项目视图
+@app.route('/big_pro')
+def big_pro():
+    last_search = None
+    page = request.args.get('page', 1, type=int)
+    per_page = current_app.config['ISSUES_PER_PAGE']
+    pagination = Issue.query.filter_by(is_pro=1).order_by(Issue.created_time.desc()).paginate(page, per_page=per_page)
+    issues = pagination.items
+    return render_template('index.html', pagination=pagination, issues=issues,last_search = last_search)
 
 
 

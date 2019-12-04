@@ -4,5 +4,6 @@ import os
 class Config:
     SQLALCHEMY_DATABASE_URI = os.getenv('DATABASE_URI')
     SQLALCHEMY_TRACK_MODIFICATIONS = False
+    SQLALCHEMY_POOL_SIZE = 40
     SECRET_KEY = os.getenv('SECRET_KEY')
     ISSUES_PER_PAGE = 50

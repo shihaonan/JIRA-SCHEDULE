@@ -32,6 +32,9 @@
                 <a href="{{ url_for('project_status',pro_status_id=i.id) }}">{{ i.name }}</a>
             </li>
         {% endfor %}
+            <li class="nav-item">
+                <a href="{{ url_for('big_pro') }}">大项目</a>
+            </li>
       </ul>
       <ul class="nav navbar-nav pull-right">
              <li class="nav-item">
@@ -47,9 +50,9 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="btnlink" href="#" >
-                    <button class="btn btn-light" id="get_new">
-                        拉取
+                <a class="btnlink" href="{{ url_for('create_pro') }}" >
+                    <button class="btn btn-light" id="create">
+                        创建
                     </button>
                 </a>
             </li>
@@ -73,12 +76,14 @@
 {% block footer %}
 <footer class="footer text-center">
     <p class="small">Powered by 顺逛产品组</p>
-
-
 </footer>
 {% endblock footer %}
 
-
+<div class="pull">
+    <a href="#" id="get_new">
+    <img src='{{ url_for('static', filename='images/bulb.png') }}'>
+    </a>
+</div>
 
 {% block scripts %}
 <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.js"></script>
@@ -86,6 +91,9 @@
 <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
 <script src="{{ url_for('static', filename='js/bootoast.js') }}"></script>
+<script>
+</script>
+
 {% endblock %}
 </body>
 </html>

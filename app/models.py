@@ -12,6 +12,7 @@ class Issue(db.Model):
     summary = db.Column(db.String(256))
     creator = db.Column(db.String(30))
     url = db.Column(db.String(256))
+    # related_big_issue_id = db.Column(db.Integer, db.ForeignKey('big_issues.id'))
     ui_schedule = db.Column(db.String(66))
     back_schedule = db.Column(db.String(66))
     front_schedule = db.Column(db.String(66))
@@ -20,6 +21,31 @@ class Issue(db.Model):
     back_staff = db.Column(db.String(256))
     front_staff = db.Column(db.String(256))
     test_staff = db.Column(db.String(256))
+    is_pro = db.Column(db.Integer)
+
+# 需要增加更新时间字段，按最后更新时间倒序排列
+# 需要增加项目类型字段，用来区分issue和大项目
+
+# class BigIssue(db.Model):
+#     __tablename__ = 'big_issues'
+#     id = db.Column(db.Integer, primary_key=True, index=True)
+#     jira_id = db.Column(db.Integer, unique=True, index=True)
+#     key = db.Column(db.String(20), unique=True,index=True)
+#     status = db.Column(db.String(30))
+#     pro_status_id = db.Column(db.Integer, db.ForeignKey('pro_status.id'))
+#     created_time = db.Column(db.Date)
+#     summary = db.Column(db.String(256))
+#     creator = db.Column(db.String(30))
+#     url = db.Column(db.String(256))
+#     related_issues = db.relationship('Issue',backref='related_big_issue',lazy='dynamic')
+#     ui_schedule = db.Column(db.String(66))
+#     back_schedule = db.Column(db.String(66))
+#     front_schedule = db.Column(db.String(66))
+#     test_schedule = db.Column(db.String(66))
+#     ui_staff = db.Column(db.String(256))
+#     back_staff = db.Column(db.String(256))
+#     front_staff = db.Column(db.String(256))
+#     test_staff = db.Column(db.String(256))
 
 
 class ProStatus(db.Model):

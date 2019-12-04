@@ -3,7 +3,10 @@
         &times;
     </button>
     <h6 class="modal-title" id="myModalLabel">
-        {{ issue.key+' '+issue.summary }}
+        {% if issue.key %}
+        {{ issue.key }}
+        {% endif %}
+        {{ issue.summary }}
     </h6>
 </div>
 <div class="modal-body" >
