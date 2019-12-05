@@ -46,21 +46,19 @@ padding: 10px 5px !important;
 .flashinfo{
 position:fixed;
 top:70px;
-right:-5px;
+left:-5px;
 }
 .bg-success{
 padding: 15px;
 margin-bottom: 5px;
-border-top-left-radius: 5px;
-border-top-right-radius: 0px;
-border-bottom-right-radius: 0px;
-border-bottom-left-radius: 5px;
+border-radius: 5px;
 }
 
 .item{
 width:1260px;
 height: 50px;
 text-align:left;
+overflow: hidden;
 }
 .bottom-line{
 background-image: linear-gradient(to right, #dedede 0%, #dedede 50%, transparent 50%);
@@ -220,4 +218,13 @@ width:395px !important;
 .xrequired:before {
         content: '* ';
         color: red;
+}
+
+label.error{
+font-size: 13px;
+font-weight: 300;
+color: #a26666;
+padding-left:80px;
+padding-top:5px;
+margin:0;
 }

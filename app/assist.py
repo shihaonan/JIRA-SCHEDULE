@@ -1,6 +1,6 @@
 from jira import JIRA
 from app import db
-from app.models import Issue,LastTime
+from app.models import Issue,LastTime,ProStatus
 from time import strptime,strftime
 from datetime import date,timedelta
 
@@ -39,13 +39,15 @@ def jira_get_new():
         db.session.commit()
     msg1 = '上次请求时间：%s 。' % last_time.last_request_time
     jql = 'project = DSG AND issuetype in (Bug, 财务需求, 需求) AND updated >= %s AND creator in (membersOf(产品组))' % last_time.last_request_time
-    issues = jira.search_issues(jql, fields=need_fields, maxResults=100)
+    issues = jira.search_issues(jql, fields=need_fields, maxResults=1000)
     existing_issues_num = 0
     new_issues_num = 0
     for issue in issues:
         existing_issue = Issue.query.filter_by(key=issue.key).first()
         if existing_issue:
             existing_issue.status = issue.fields.status.name
+            if existing_issue.status == '关闭':
+                existing_issue.pro_status = ProStatus.query.filter_by(name='已上线').first()
             existing_issue.summary = issue.fields.summary
             db.session.commit()
             existing_issues_num += 1

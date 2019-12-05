@@ -6,7 +6,7 @@
     <h3>创建大项目</h3>
     <p>不建议使用此功能，除非真的需要，因通过此功能创建的项目没有jira ID。</p>
     <p>严格的流程应该是先在jira创建issue，然后拉取到本地。</p>
-    <form action="{{ url_for('handle_big_pro') }}" method="post" id="schedule_form">
+    <form action="{{ url_for('handle_big_pro') }}" method="post" id="create_pro_form">
         <div class="form-group form-inline">
             <span class="formlabel xrequired">项目名称</span>
             <input class="form-control form-alone" type="text" id="summary" name="summary" placeholder="必填">
@@ -22,7 +22,7 @@
         </div>
         <div class="form-group form-inline">
             <span class="formlabel xrequired">项目状态</span>
-            <select class="form-control form-alone" id="pro_status_form" name="pro_status">
+            <select class="form-control form-alone" id="pro_status" name="pro_status">
                 <option value="">选择项目状态</option>
                 {% for pro_status in all_pro_status %}
                     <option value="{{ pro_status.id }}" >{{ pro_status.name }}</option>
@@ -61,7 +61,8 @@
 
 {% block scripts %}
 {{ super() }}
-
+<script src="https://cdn.bootcss.com/jquery-validate/1.19.1/jquery.validate.min.js"></script>
+<script src="https://cdn.bootcss.com/jquery-validate/1.19.1/localization/messages_zh.min.js"></script>
 <script type="text/javascript">
 $(function() {
    //时间选择器
@@ -84,6 +85,31 @@ $(function() {
       $(this).val('');
     });
 
+    //表单验证
+    $('#create_pro_form').validate({
+        rules:{
+            summary:{
+                required:true,
+            },
+            pm:{
+                required:true,
+            },
+            pro_status:{
+                required:true,
+            },
+        },
+        messages:{
+            summary:{
+                required:'必须填写项目名称',
+            },
+            pm:{
+                required:'必须选择产品经理',
+            },
+            pro_status:{
+                required:'必须选择项目状态',
+            },
+        },
+    });
 });
 
 </script>

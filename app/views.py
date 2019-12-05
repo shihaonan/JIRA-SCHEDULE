@@ -198,7 +198,7 @@ def handle_big_pro():
     db.session.add(big_pro)
     db.session.commit()
     msg = '%s 已更新' % summary
-    flash('文章发布成功')
+    flash('大项目：%s 创建成功' % summary)
     return redirect(url_for('big_pro'))
 
 # 大项目视图

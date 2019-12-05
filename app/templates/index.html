@@ -5,7 +5,7 @@
 <form action="{{ url_for('multi_search') }} " id="multisearchform" class="form-inline">
     <input class="form-control" id="jira_key" name="jira_key" type="text" value="{% if last_search['jira_key'] %}{{ last_search['jira_key'] }}{% endif %}" placeholder="输入jira编号">
     <input class="form-control" id="summary" name="summary" type="text" value="{% if last_search['summary'] %}{{ last_search['summary'] }}{% endif %}" placeholder="输入jira标题">
-    <select class="form-control" id="pm" name="pm" value="产品经理">
+    <select class="form-control" id="pm" name="pm" >
         <option value="">选择产品经理</option>
         {% for pm in all_creator %}
             <option value="{{ pm }}" {% if last_search['pm']==pm %}selected{% endif %}>{{ pm }}</option>
