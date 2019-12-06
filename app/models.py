@@ -12,7 +12,6 @@ class Issue(db.Model):
     summary = db.Column(db.String(256))
     creator = db.Column(db.String(30))
     url = db.Column(db.String(256))
-    # related_big_issue_id = db.Column(db.Integer, db.ForeignKey('big_issues.id'))
     ui_schedule = db.Column(db.String(66))
     back_schedule = db.Column(db.String(66))
     front_schedule = db.Column(db.String(66))
@@ -22,9 +21,9 @@ class Issue(db.Model):
     front_staff = db.Column(db.String(256))
     test_staff = db.Column(db.String(256))
     is_pro = db.Column(db.Integer)
+    resolutiondate = db.Column(db.Date)
+    updated = db.Column(db.Date)
 
-# 需要增加更新时间字段，按最后更新时间倒序排列
-# 需要增加项目类型字段，用来区分issue和大项目
 
 # class BigIssue(db.Model):
 #     __tablename__ = 'big_issues'

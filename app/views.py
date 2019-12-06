@@ -109,7 +109,14 @@ def export():
             'ui_schedule',
             'back_schedule',
             'front_schedule',
-            'test_schedule'
+            'test_schedule',
+            'ui_staff',
+            'back_staff',
+            'front_staff',
+            'test_staff',
+            'is_pro',
+            'resolutiondate',
+            'updated'
         ],
         file_type='xlsx',
         file_name='全部需求.xlsx'

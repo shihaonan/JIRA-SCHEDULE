@@ -6,7 +6,7 @@ from datetime import date,timedelta
 
 server='http://10.9.11.254'
 jira = JIRA(server,basic_auth=('shihaonan','haonan1124'))
-need_fields = 'status,created,summary,creator'
+need_fields = 'status,created,summary,creator,resolutiondate,updated'
 
 
 # 获取全部数据
@@ -15,11 +15,17 @@ def jira_get_all():
     issues = jira.search_issues(jql,fields=need_fields,maxResults=1000)
     all_issues_num = 0
     for issue in issues:
+        if issue.fields.resolutiondate:
+            issue_resolutiondate = strftime("%Y-%m-%d", strptime(issue.fields.resolutiondate[0:10], '%Y-%m-%d'))
+        else:
+            issue_resolutiondate = None
         new_issue = Issue(
             key=issue.key,
             jira_id=int(issue.id),
             status=issue.fields.status.name,
             created_time= strftime("%Y-%m-%d", strptime(issue.fields.created[0:10],'%Y-%m-%d')),
+            resolutiondate=issue_resolutiondate,
+            updated=strftime("%Y-%m-%d", strptime(issue.fields.updated[0:10], '%Y-%m-%d')),
             summary=issue.fields.summary,
             creator=issue.fields.creator.displayName,
             url=str(server+'/browse/'+issue.key)
@@ -44,11 +50,17 @@ def jira_get_new():
     new_issues_num = 0
     for issue in issues:
         existing_issue = Issue.query.filter_by(key=issue.key).first()
+        if issue.fields.resolutiondate:
+            issue_resolutiondate = strftime("%Y-%m-%d", strptime(issue.fields.resolutiondate[0:10], '%Y-%m-%d'))
+        else:
+            issue_resolutiondate = None
         if existing_issue:
             existing_issue.status = issue.fields.status.name
             if existing_issue.status == '关闭':
                 existing_issue.pro_status = ProStatus.query.filter_by(name='已上线').first()
             existing_issue.summary = issue.fields.summary
+            existing_issue.resolutiondate = issue_resolutiondate
+            existing_issue.updated = strftime("%Y-%m-%d", strptime(issue.fields.updated[0:10], '%Y-%m-%d'))
             db.session.commit()
             existing_issues_num += 1
         else:
@@ -57,6 +69,8 @@ def jira_get_new():
                 jira_id=int(issue.id),
                 status=issue.fields.status.name,
                 created_time=strftime("%Y-%m-%d", strptime(issue.fields.created[0:10], '%Y-%m-%d')),
+                resolutiondate=issue_resolutiondate,
+                updated=strftime("%Y-%m-%d", strptime(issue.fields.updated[0:10], '%Y-%m-%d')),
                 summary=issue.fields.summary,
                 creator=issue.fields.creator.displayName,
                 url=str(server + '/browse/' + issue.key)
