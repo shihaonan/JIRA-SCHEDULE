@@ -25,7 +25,7 @@ mysql-connector-python==8.0.18
 oauthlib==3.1.0
 openpyxl==2.5.14
 pbr==5.4.3
-protobuf==3.10.0
+protobuf==3.18.3
 pycparser==2.19
 pyexcel==0.5.15
 pyexcel-io==0.5.20
